@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: 'mysql:5.7'
+    container_name: mysql
+    restart: 'unless-stopped'
+    expose:
+      - '3306'
+    ports:
+      - '3306:3306'
+    volumes:
+      - './database/backup:/backup'
+    environment:
+       MYSQL_ROOT_PASSWORD: 'root'
+       MYSQL_DATABASE: 'mydb'
+  backend:
+    build: "./src/WebApiWithGenerics.WebApi"
+    container_name: "webapi"
+    restart: 'unless-stopped'
+    ports:
+        - '5000:80'
+        - '5001:443'
+    volumes:
+        - '~/.aspnet/https:/https'
+    environment:
+        - "ASPNETCORE_Kestrel__Certificates__Default__Password=password"
+        - "ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx"
+        - "ASPNETCORE_URLS=https://+;http://+"
+        - "ConnectionStrings__Default=server=mysql;userid=root;pwd=root;port=3306;database=mydb"
