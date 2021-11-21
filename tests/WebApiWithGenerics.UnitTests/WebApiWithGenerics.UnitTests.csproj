@@ -2,9 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-
-    <IsPackable>false</IsPackable>
+    <NoWarn>SA1633</NoWarn>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
