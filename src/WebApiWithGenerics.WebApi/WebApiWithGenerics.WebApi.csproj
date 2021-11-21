@@ -1,7 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <RootNamespace>WebApiWithGenerics.WebApi</RootNamespace>
+    <Product>WebApiWithGenerics.WebApi</Product>
+    <Authors>Timo Heller</Authors>
+    <Description>Sample for a web api that uses generics.</Description>
+    <Copyright>Timo Heller</Copyright>
+    <PackageProjectUrl>https://github.com/timoheller99/WebApiWithGenerics</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/timoheller99/WebApiWithGenerics</RepositoryUrl>
+    <CodeAnalysisRuleSet>../../analyzer.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>NU5105</NoWarn>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
