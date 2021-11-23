@@ -21,5 +21,20 @@ namespace WebApiWithGenerics.WebApi.Extensions
 
             return expression;
         }
+
+        public static MapperConfigurationExpression AddTodoMappings(this MapperConfigurationExpression expression)
+        {
+            expression.CreateMap<TodoCreateRequest, TodoDbContract>();
+            expression.CreateMap<TodoDbContract, TodoCreateResponse>();
+
+            expression.CreateMap<TodoDbContract, TodoGetResponse>();
+
+            expression.CreateMap<TodoUpdateRequest, TodoDbContract>();
+            expression.CreateMap<TodoDbContract, TodoUpdateResponse>();
+
+            expression.CreateMap<TodoDbContract, TodoDeleteResponse>();
+
+            return expression;
+        }
     }
 }
