@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS `User` (
   `Username` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC) VISIBLE,
-  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
-ENGINE = InnoDB;
+  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC),
+  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC))
+;
 
 
 -- -----------------------------------------------------
@@ -42,13 +42,13 @@ CREATE TABLE IF NOT EXISTS `TodoList` (
   `Name` VARCHAR(45) NOT NULL,
   `UserId` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`ID`),
-  INDEX `fk_TodoList_User_idx` (`UserId` ASC) VISIBLE,
+  INDEX `fk_TodoList_User_idx` (`UserId` ASC),
   CONSTRAINT `fk_TodoList_User`
     FOREIGN KEY (`UserId`)
     REFERENCES `User` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+;
 
 
 -- -----------------------------------------------------
@@ -64,13 +64,13 @@ CREATE TABLE IF NOT EXISTS `Todo` (
   `Status` VARCHAR(36) NOT NULL,
   `Deadline` DATETIME NULL,
   PRIMARY KEY (`ID`),
-  INDEX `fk_Todo_TodoList1_idx` (`TodoListId` ASC) VISIBLE,
+  INDEX `fk_Todo_TodoList1_idx` (`TodoListId` ASC),
   CONSTRAINT `fk_Todo_TodoList1`
     FOREIGN KEY (`TodoListId`)
     REFERENCES `TodoList` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
