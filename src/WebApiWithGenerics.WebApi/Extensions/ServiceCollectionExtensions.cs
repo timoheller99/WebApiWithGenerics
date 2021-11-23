@@ -12,6 +12,7 @@ namespace WebApiWithGenerics.WebApi.Extensions
 
     using Serilog;
 
+    using WebApiWithGenerics.WebApi.Contracts.Todo;
     using WebApiWithGenerics.WebApi.Contracts.User;
     using WebApiWithGenerics.WebApi.Repositories;
     using WebApiWithGenerics.WebApi.Services;
@@ -37,7 +38,8 @@ namespace WebApiWithGenerics.WebApi.Extensions
         public static IServiceCollection AddMappings(this IServiceCollection services)
         {
             var mappingConfigurationExpression = new MapperConfigurationExpression()
-                .AddUserMappings();
+                .AddUserMappings()
+                .AddTodoMappings();
 
             var mapper = new MapperConfiguration(mappingConfigurationExpression).CreateMapper();
 
@@ -58,6 +60,7 @@ namespace WebApiWithGenerics.WebApi.Extensions
         public static IServiceCollection AddMySqlScriptGenerators(this IServiceCollection services)
         {
             services.AddSingleton<UserDapperMySqlScriptGenerator>();
+            services.AddSingleton<TodoDapperMySqlScriptGenerator>();
 
             return services;
         }
@@ -65,6 +68,7 @@ namespace WebApiWithGenerics.WebApi.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITodoRepository, TodoRepository>();
 
             return services;
         }
@@ -72,6 +76,7 @@ namespace WebApiWithGenerics.WebApi.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITodoService, TodoService>();
 
             return services;
         }
@@ -79,6 +84,7 @@ namespace WebApiWithGenerics.WebApi.Extensions
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
             services.AddSingleton<UserValidator>();
+            services.AddSingleton<TodoValidator>();
 
             return services;
         }
@@ -86,6 +92,7 @@ namespace WebApiWithGenerics.WebApi.Extensions
         public static IServiceCollection AddValidationServices(this IServiceCollection services)
         {
             services.AddSingleton<ValidationService<UserValidator, IUser>>();
+            services.AddSingleton<ValidationService<TodoValidator, ITodo>>();
 
             return services;
         }
