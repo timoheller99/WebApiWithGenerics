@@ -1,0 +1,31 @@
+name: Build sources
+
+on:
+  push:
+    branches:
+      - "*"
+      - "*/*"
+
+jobs:
+  build:
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    name: Build sources
+    runs-on: ubuntu-18.04
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Build sources
+        run: dotnet build -c Release
+
+      - name: Execute Tests
+        working-directory: test/WebApiWithGenerics.UnitTests
+        run: dotnet test
