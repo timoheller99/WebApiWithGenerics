@@ -6,6 +6,9 @@ namespace WebApiWithGenerics.WebApi
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
 
+    using WebApiWithGenerics.WebApi.Configuration;
+    using WebApiWithGenerics.WebApi.Extensions;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -18,10 +21,37 @@ namespace WebApiWithGenerics.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSerilogLogging(this.Configuration);
+
+            var openApiInfo = new OpenApiInfo();
+            this.Configuration.GetSection("OpenApiInfo").Bind(openApiInfo);
+            services.AddSingleton(openApiInfo);
+
+            var databaseConfiguration = new DatabaseConfiguration
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiWithGenerics.WebApi", Version = "v1" });
+                ConnectionString = this.Configuration.GetConnectionString("Default"),
+            };
+            services.AddSingleton(databaseConfiguration);
+
+            services.AddMappings();
+            services.AddDapperGuidMapper();
+            services.AddMySqlScriptGenerators();
+            services.AddRepositories();
+            services.AddServices();
+            services.AddValidators();
+            services.AddValidationServices();
+
+            services.AddControllers();
+
+            services.AddSwaggerGen(swaggerGenOptions =>
+            {
+                swaggerGenOptions.SwaggerDoc(openApiInfo.Version, openApiInfo);
+
+                swaggerGenOptions = swaggerGenOptions.AddXmlComments();
+
+                swaggerGenOptions = swaggerGenOptions.AddCustomAuth();
+
+                swaggerGenOptions.CustomSchemaIds(x => x.Name);
             });
         }
 
